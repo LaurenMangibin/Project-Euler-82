@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage[margin = 1 in]{geometry}
+\usepackage[parfill]{parskip}
+\input{Preamble.tex}
+
+
+\begin{document}
+
+\begin{flushright}
+Lauren Mangibin
+\end{flushright}
+
+\begin{center}
+    \underline{\textbf{Project Euler \#82}}
+\end{center}
+
+Problem:
+
+The minimal path sum in the 5 by 5 matrix below, by starting in any cell in the left column and finishing in any cell in the right column, and only moving up, down, and right, is indicated in red and bold; the sum is equal to 994.
+\begin{center}
+    $\begin{array}{cccccc}
+131&673&\textcolor{red}{234}&\textcolor{red}{103}&\textcolor{red}{18}\\
+\textcolor{red}{201}&\textcolor{red}{96}&\textcolor{red}{342}&965&150\\
+630&803&746&422&111\\
+537&699&497&121&956\\
+805&732&524&37&331\\
+\end{array}$
+
+\end{center}
+
+Find the minimal path sum, in matrix.txt (right click and "Save Link/Target As..."), a 31K text file containing a 80 by 80 matrix, from the left column to the right column.
+
+
+Answer and Explanation:\\
+\textbf{Solution: 260324}\\
+Unlike problem 81, we are now able to move up, down, and to the right, and we need to figure out which point we start from in the grid. To do this, we start from the second to last column to figure out the minimum pathway. Like problem 81, we can break down this set into a smaller set of comparisons between up, down, and right. Firstly, if the minimal path for that space goes up, then the minimal path cannot be down. Therefore, you should compare firstly, if it is more beneficial to go up or right, then you compare that option to going to going down.\\
+
+When comparing to go up or right, you should first check the value of going to the right vs. going up and right. Even though it might be more beneficial just to go down first, it wouldn't be beneficial to go up the second time because it would just negate the action. Therefore, we check the up and right option just in case, and the problem is already solved. Then you check if it is more beneficial to go down later. You check this for each of the spaces in the matrix and now you know the minimal path. Essentially, we are going backwards to find the minimal path.
+
+Code:
+    \begin{verbatim}
+    
+f = open ("p081_matrix.txt", 'r')
+matrix = [int(num for num in line.split(',') for line in f ]
+row = len(matrix)
+col = len(matrix[0])
+value = [matrix[i][-1] for i in xrange(row)]
+
+for i in xrange(col-2, -1, -1):
+	value += matrix[0][i]
+	for j in xrange(1, row):
+		value[j] = min(value[j], value[j-1]) + matrix[j][i]
+	for j in xrange(n-2, -1, -1):
+		value[j] = min(value, value[j+1] + value[j][i])
+
+print min(value)
+
+  \end{verbatim}
+\end{document}
